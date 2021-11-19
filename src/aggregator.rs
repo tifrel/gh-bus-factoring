@@ -18,17 +18,24 @@ pub async fn aggregate(
     repo: RepoResponse,
     contributors: Vec<ContributorResponse>,
 ) -> AggregatedRepo {
+    use std::convert::TryFrom;
+
     let mut contributions = Vec::new();
     for contributor in contributors {
-        let mut total = 0;
-        for week in contributor.weeks {
-            total += week.a + week.d;
-        }
+        if let Some(author) = contributor.author {
+            let mut total = 0;
+            for week in contributor.weeks {
+                total += week.a + week.d;
+            }
 
-        contributions.push(Contribution {
-            user: contributor.author.login,
-            total,
-        });
+            contributions.push(Contribution {
+                user: author.login,
+                // this unwrap basically assumes that the (non-sensical)
+                // negative contributions never sum up to more than the positive
+                // contributions
+                total: u32::try_from(total.max(0)).unwrap(),
+            });
+        }
     }
 
     // arguments swapped so we get the top contributor first
@@ -66,7 +73,7 @@ mod test {
     macro_rules! contributor_response {
 		($author:expr, $(($a:expr, $d:expr)),+) => {
 			ContributorResponse {
-				author: UserResponse { login: $author.to_owned() },
+				author: Some(UserResponse { login: $author.to_owned() }),
 				weeks: vec![$(WeeklyCommitsResponse {a: $a, d: $d}),+],
 			}
 		};

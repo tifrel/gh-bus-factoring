@@ -13,14 +13,14 @@ pub struct RepoResponse {
 
 #[derive(Deserialize, Debug)]
 pub struct ContributorResponse {
-    pub(crate) author: UserResponse,
+    pub(crate) author: Option<UserResponse>,
     pub(crate) weeks: Vec<WeeklyCommitsResponse>,
 }
 
 #[derive(Deserialize, Debug)]
 pub struct WeeklyCommitsResponse {
-    pub(crate) a: u32,
-    pub(crate) d: u32,
+    pub(crate) a: i64, // signed not because it makes sense, but because GH
+    pub(crate) d: i64, // sometimes returns such nonsense
 }
 
 #[derive(Deserialize, Debug)]

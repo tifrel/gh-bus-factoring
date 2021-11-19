@@ -91,12 +91,12 @@ async fn main() {
     drop(err_tx);
 
     // print header
-    println!("{:24}{:24}{:24}", "project", "user", "percentage");
+    println!("{:44}{:24}{:12}", "project", "user", "percentage");
     println!(
-        "{:24}{:24}{:24}",
+        "{:44}{:24}{:12}",
+        "-".repeat(42),
         "-".repeat(22),
-        "-".repeat(22),
-        "-".repeat(22),
+        "-".repeat(10),
     );
 
     // process data

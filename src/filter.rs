@@ -13,7 +13,7 @@ impl fmt::Display for RepoWithMvp {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
-            "{:24}{:24}{:.2}",
+            "{:44}{:24}{:.2}",
             format!("{}/{}", self.owner, self.name),
             self.mvp,
             self.mvp_percent
@@ -70,7 +70,7 @@ mod test {
             owner: "owner".to_owned(),
             name: "repo".to_owned(),
             top25_total_contributions: 100,
-            contributions: vec![contribution!("owner", 75), contribution!("user", 24)],
+            contributions: vec![contribution!("owner", 75), contribution!("user", 25)],
         };
         assert_eq!(
             filter(aggregated),
